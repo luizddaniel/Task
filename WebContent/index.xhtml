@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>List Tasks</title>
+</h:head>
+<h:body>
+	<p:growl id="messages" showDetail="true" />
+
+	<p:toolbar>
+		<f:facet name="left">
+			<p:button outcome="tasks.xhtml" value="New Task" actionListener="#{taskBean.insert()}" icon="ui-icon-document"/>
+			
+
+			<p:commandButton type="button" value="Find" action="#{taskBean.insert}" icon="ui-icon-folder-open" />
+
+			<span class="ui-separator"> <span
+				class="ui-icon ui-icon-grip-dotted-vertical" />
+			</span>
+
+			<p:commandButton type="button" title="Save" icon="ui-icon-disk" />
+			<p:commandButton type="button" title="Delete" icon="ui-icon-trash" />
+			<p:commandButton type="button" title="Print" icon="ui-icon-print" />
+		</f:facet>
+
+	</p:toolbar>
+	 <h:form id="formPrincipal">
+	<p:dataTable id="listaTarefas" value="#{taskBean.tasks}" var="task" style="margin-bottom:40px">
+		<f:facet name="header">
+            List Tasks
+        </f:facet>
+		<p:column headerText="Date Init" sortBy="#{task.data_inicio}">
+			<h:outputText value="#{task.data_inicio}" />
+		</p:column>
+
+		<p:column headerText="Descripition" sortBy="#{task.descripition}">
+			<h:outputText value="#{task.descripition}" />
+		</p:column>
+
+		<p:column headerText="Status" sortBy="#{task.status}">
+			<h:outputText value="#{task.status}" />
+		</p:column>
+
+		<p:column headerText="Date End" sortBy="#{task.data_fim}">
+			<h:outputText value="#{task.data_fim}" />
+		</p:column>
+		
+		<p:column style="width:32px">
+			<p:rowEditor outcome="tasks.xhtml" value="true"/>
+		</p:column>
+	</p:dataTable>
+  </h:form>
+
+		 <h:form id="formCadastrar">
+                <p:dialog header="Cadastrar" widgetVar="dialogCadastrar" modal="true">
+                        <p:panelGrid id="panelCadastrar" columns="2">
+                                <h:outputText value="Start Date:" />
+                                <p:inputText value="#{taskBean.task.data_inicio}" />
+                                <h:outputText value="Descripition:" />
+                                <p:inputText value="#{taskBean.task.descripition}" />
+                                <h:outputText value="Status" />
+                                <p:inputText value="#{taskBean.task.status}" />
+                                 <h:outputText value="Final Date:" />
+                                <p:inputText value="#{taskBean.task.data_fim}" />
+                        </p:panelGrid>
+                        <p:commandButton value="Cadastrar"
+                                actionListener="#{taskBean.insert}"
+                                update=":formPrincipal:listaTarefas"
+                                oncomplete="dialogCadastrar.hide()" />
+                </p:dialog>
+        </h:form>
+</h:body>
+</html>
