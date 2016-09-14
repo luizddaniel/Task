@@ -10,6 +10,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.SelectEvent;
 
 import br.com.estudo.model.TaskDAO;
 import br.com.estudo.model.TaskImp;
@@ -38,7 +39,7 @@ public class TaskBean {
 	}
 
 	public void list(ActionEvent actionEvent) {
-		new TaskDAO().add(taskImp);
+		new TaskDAO().listar();
 		tasks = new TaskDAO().listar();
 		taskImp = new TaskImp();
 
@@ -57,6 +58,12 @@ public class TaskBean {
 		taskImp = new TaskImp();
 
 	}
+	
+	 public void onRowSelect(SelectEvent event) {
+	        FacesMessage msg = new FacesMessage("Informação",
+	                "( " + ((TaskImp) event.getObject()).getId());
+	        FacesContext.getCurrentInstance().addMessage(null, msg);
+	    }
 
 	
 	/*

@@ -9,7 +9,7 @@
 	<title>List Tasks</title>
 </h:head>
 <h:body>
-	<p:growl id="messages" showDetail="true" />
+
 
 	<p:toolbar>
 		<f:facet name="left">
@@ -17,64 +17,79 @@
 				icon="ui-icon-document" />
 
 
-			<p:commandButton type="button" value="Find" action="#{taskBean.list}"
-				icon="ui-icon-folder-open" update="formPrincipal:listaTarefas"/>
+			<p:commandButton type="button" value="List" action="#{taskBean.list}"
+				icon="ui-icon-folder-open" update="formPrincipal:listaTarefas" />
 
 			<span class="ui-separator"> <span
 				class="ui-icon ui-icon-grip-dotted-vertical" />
 			</span>
 
-			<p:commandButton type="button" title="Save" icon="ui-icon-disk" />
-
-			<p:button icon="ui-icon-trash" />
-
-			<p:commandButton type="button" title="Print" icon="ui-icon-print" />
+			<p:inputText></p:inputText>
+			<p:commandButton type="button" title="Find" icon="ui-icon-search" />
 
 		</f:facet>
 
 	</p:toolbar>
 	<h:form id="formPrincipal">
+		<p:growl id="messages" showDetail="true" />
 		<p:dataTable id="listaTarefas" value="#{taskBean.tasks}" var="task"
 			style="margin-bottom:30px" rows="10" paginator="true"
 			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 			rowsPerPageTemplate="5,10,15">>
-		<f:facet name="header">
+			
+			<p:ajax event="rowSelect" listener="#{taskBean.onRowSelect}"
+				update=":formPrincipal:messages" />
+
+			<f:facet name="header">
             List Tasks
         </f:facet>
 
 			<p:column headerText="Id" sortBy="#{task.id}" style="width:35px">
 				<h:outputText value="#{task.id}" />
 			</p:column>
-			
-			<p:column headerText="Start Date" sortBy="#{task.data_inicio}">
-				 <h:outputText value="#{task.data_inicio}">
-				 <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-				 </h:outputText>
+
+			<p:column headerText="Start Date" sortBy="#{task.data_inicio}"
+				style="width:105px">
+				<h:outputText value="#{task.data_inicio}">
+					<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+				</h:outputText>
 			</p:column>
 
 			<p:column headerText="Descripition" sortBy="#{task.descripition}">
 				<h:outputText value="#{task.descripition}" />
 			</p:column>
 
-			<p:column headerText="Status" sortBy="#{task.status}">
+			<p:column headerText="Status" sortBy="#{task.status}"
+				style="width:75px">
 				<h:outputText value="#{task.status}" />
 			</p:column>
 
-			<p:column headerText="Status" sortBy="#{task.status}">
-				<h:outputText value="#{task.status}" />
-			</p:column>
-
-			<p:column headerText="Final Date" sortBy="#{task.data_fim}">
-				<h:outputText value="#{task.data_fim}" >
-				<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+			<p:column headerText="Final Date" sortBy="#{task.data_fim}"
+				style="width:105px">
+				<h:outputText value="#{task.data_fim}">
+					<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
 				</h:outputText>
 			</p:column>
 
-			<p:column headerText="Action">
-				<p:commandButton value="Edit" action="tasks.xhtml"/>
-				<p:commandButton value="Delete" actionListener="#{taskBean.excluir(task)}" update=":formPrincipal:listaTarefas"/>
+			<p:column headerText="Action" style="width:95px">
+				<p:button outcome="edit.xhtml" type="button" title="Edit"
+					icon="ui-icon-pencil" />
+				<p:commandButton type="button" title="Delete"
+					oncomplete="deletaTask.show()" actionListener="#{taskBean.excluir}"
+					update=":displayDeletaTask" icon="ui-icon-trash" />
 			</p:column>
 		</p:dataTable>
 	</h:form>
+	<p:dialog modal="false" id="dialogDeletaTask" header="Deletar"
+		widgetVar="deletaTask" resizable="false">
+		<h:panelGrid id="displayDeletaTask" columns="2" cellpadding="4">
+			<h:outputText value="Deseja exluir realmente?" />
+			<br />
+			<p:commandButton value="Sim" action="#{taskBean.excluir}"
+				update=":formPrincipal:listaTarefas" oncomplete="deletaTask.hide()" />
+			<p:commandButton value="Não" oncomplete="deletaTask.hide()"
+				update=":formPrincipal:listaTarefas" />
+		</h:panelGrid>
+	</p:dialog>
 </h:body>
 </html>

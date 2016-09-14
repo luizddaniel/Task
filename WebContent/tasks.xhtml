@@ -31,8 +31,8 @@
 				<p:calendar id="data_fim" value="#{taskBean.task.data_fim}"
 					showOn="button" />
 				<p:commandButton value="Save" actionListener="#{taskBean.insert}"
-					action="index.xhtml"/>
-				<p:button value="Cancel" outcome="index.xhtml"></p:button>
+					action="index.xhtml" icon="ui-icon-disk" />
+				<p:button value="Cancel" outcome="index.xhtml" icon="ui-icon-cancel"></p:button>
 			</p:panelGrid>
 		</h:form>
 	</p:fieldset>
