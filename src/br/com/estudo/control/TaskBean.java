@@ -2,9 +2,15 @@ package br.com.estudo.control;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+
+import org.primefaces.event.RowEditEvent;
+
 import br.com.estudo.model.TaskDAO;
 import br.com.estudo.model.TaskImp;
 
@@ -31,6 +37,13 @@ public class TaskBean {
 
 	}
 
+	public void list(ActionEvent actionEvent) {
+		new TaskDAO().add(taskImp);
+		tasks = new TaskDAO().listar();
+		taskImp = new TaskImp();
+
+	}
+	
 	public void update(ActionEvent actionEvent) {
 		new TaskDAO().alterar(taskImp);
 		tasks = new TaskDAO().listar();
@@ -38,13 +51,14 @@ public class TaskBean {
 
 	}
 
-	public void delete(ActionEvent actionEvent) {
+	public void excluir(ActionEvent actionEvent, TaskImp taskImp) {
 		new TaskDAO().excluir(taskImp);
 		tasks = new TaskDAO().listar();
 		taskImp = new TaskImp();
 
 	}
 
+	
 	/*
 	 * public void adicionar(){ tasks.add(task); taskDAO.salvarTask(task); task
 	 * = new TaskImp();

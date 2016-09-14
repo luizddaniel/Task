@@ -13,65 +13,68 @@
 
 	<p:toolbar>
 		<f:facet name="left">
-			<p:button outcome="tasks.xhtml" value="New Task" actionListener="#{taskBean.insert()}" icon="ui-icon-document"/>
-			
+			<p:button outcome="tasks.xhtml" value="New Task"
+				icon="ui-icon-document" />
 
-			<p:commandButton type="button" value="Find" action="#{taskBean.insert}" icon="ui-icon-folder-open" />
+
+			<p:commandButton type="button" value="Find" action="#{taskBean.list}"
+				icon="ui-icon-folder-open" update="formPrincipal:listaTarefas"/>
 
 			<span class="ui-separator"> <span
 				class="ui-icon ui-icon-grip-dotted-vertical" />
 			</span>
 
 			<p:commandButton type="button" title="Save" icon="ui-icon-disk" />
-			<p:commandButton type="button" title="Delete" icon="ui-icon-trash" />
+
+			<p:button icon="ui-icon-trash" />
+
 			<p:commandButton type="button" title="Print" icon="ui-icon-print" />
+
 		</f:facet>
 
 	</p:toolbar>
-	 <h:form id="formPrincipal">
-	<p:dataTable id="listaTarefas" value="#{taskBean.tasks}" var="task" style="margin-bottom:40px">
+	<h:form id="formPrincipal">
+		<p:dataTable id="listaTarefas" value="#{taskBean.tasks}" var="task"
+			style="margin-bottom:30px" rows="10" paginator="true"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15">>
 		<f:facet name="header">
             List Tasks
         </f:facet>
-		<p:column headerText="Date Init" sortBy="#{task.data_inicio}">
-			<h:outputText value="#{task.data_inicio}" />
-		</p:column>
 
-		<p:column headerText="Descripition" sortBy="#{task.descripition}">
-			<h:outputText value="#{task.descripition}" />
-		</p:column>
+			<p:column headerText="Id" sortBy="#{task.id}" style="width:35px">
+				<h:outputText value="#{task.id}" />
+			</p:column>
+			
+			<p:column headerText="Start Date" sortBy="#{task.data_inicio}">
+				 <h:outputText value="#{task.data_inicio}">
+				 <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+				 </h:outputText>
+			</p:column>
 
-		<p:column headerText="Status" sortBy="#{task.status}">
-			<h:outputText value="#{task.status}" />
-		</p:column>
+			<p:column headerText="Descripition" sortBy="#{task.descripition}">
+				<h:outputText value="#{task.descripition}" />
+			</p:column>
 
-		<p:column headerText="Date End" sortBy="#{task.data_fim}">
-			<h:outputText value="#{task.data_fim}" />
-		</p:column>
-		
-		<p:column style="width:32px">
-			<p:rowEditor outcome="tasks.xhtml" value="true"/>
-		</p:column>
-	</p:dataTable>
-  </h:form>
+			<p:column headerText="Status" sortBy="#{task.status}">
+				<h:outputText value="#{task.status}" />
+			</p:column>
 
-		 <h:form id="formCadastrar">
-                <p:dialog header="Cadastrar" widgetVar="dialogCadastrar" modal="true">
-                        <p:panelGrid id="panelCadastrar" columns="2">
-                                <h:outputText value="Start Date:" />
-                                <p:inputText value="#{taskBean.task.data_inicio}" />
-                                <h:outputText value="Descripition:" />
-                                <p:inputText value="#{taskBean.task.descripition}" />
-                                <h:outputText value="Status" />
-                                <p:inputText value="#{taskBean.task.status}" />
-                                 <h:outputText value="Final Date:" />
-                                <p:inputText value="#{taskBean.task.data_fim}" />
-                        </p:panelGrid>
-                        <p:commandButton value="Cadastrar"
-                                actionListener="#{taskBean.insert}"
-                                update=":formPrincipal:listaTarefas"
-                                oncomplete="dialogCadastrar.hide()" />
-                </p:dialog>
-        </h:form>
+			<p:column headerText="Status" sortBy="#{task.status}">
+				<h:outputText value="#{task.status}" />
+			</p:column>
+
+			<p:column headerText="Final Date" sortBy="#{task.data_fim}">
+				<h:outputText value="#{task.data_fim}" >
+				<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="Action">
+				<p:commandButton value="Edit" action="tasks.xhtml"/>
+				<p:commandButton value="Delete" actionListener="#{taskBean.excluir(task)}" update=":formPrincipal:listaTarefas"/>
+			</p:column>
+		</p:dataTable>
+	</h:form>
 </h:body>
 </html>
